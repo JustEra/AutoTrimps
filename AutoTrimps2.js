@@ -1,4 +1,4 @@
-var ATversion='2.1.6.9b-genbtc-4-2-2018 + KFrowde + Zeker0',atscript=document.getElementById('AutoTrimps-script'),basepath='https://Zorn192.github.io/AutoTrimps/',modulepath='modules/';null!==atscript&&(basepath=atscript.src.replace(/AutoTrimps2\.js$/,''));
+var ATversion='2.1.6.9b-genbtc-4-2-2018 + KFrowde + Zeker0',atscript=document.getElementById('AutoTrimps-script'),basepath='https://justera.github.io/AutoTrimps/',modulepath='modules/';null!==atscript&&(basepath=atscript.src.replace(/AutoTrimps2\.js$/,''));
 function ATscriptLoad(a,b){null==b&&debug('Wrong Syntax. Script could not be loaded. Try ATscriptLoad(modulepath, \'example.js\'); ');var c=document.createElement('script');null==a&&(a=''),c.src=basepath+a+b+'.js',c.id=b+'_MODULE',document.head.appendChild(c)}
 function ATscriptUnload(a){var b=document.getElementById(a+"_MODULE");b&&(document.head.removeChild(b),debug("Removing "+a+"_MODULE","other"))}
 ATscriptLoad(modulepath, 'utils');
@@ -15,6 +15,7 @@ function initializeAutoTrimps() {
 }
 
 var changelogList = [];
+changelogList.push({date: "20/03/2019", version: "v3.1.0", description: "<b>4.10.4</b> fixed ratio ", isNew: true});
 changelogList.push({date: "06/02/2019", version: "v3.1.0", description: "<b>4.10.4</b> Autonu Spender added. I think I did some other things but I honestly cant remember. Enjoy! ", isNew: true});
 changelogList.push({date: "15/01/2019", version: "v3.0.1", description: "<b>4.10.3</b> New Windstacking stance, seems to work fine. Removed B stance, Heirloom swap settings, Heirloom HD from Non-Daily and Daily tabs. New Windstacking manages it for you. ", isNew: false});
 changelogList.push({date: "12/01/2019", version: "v3.0.0", description: "<b>4.10.2</b> Whole host of new changes and background fixes and additions, mostly calculations, which means is pretty much a new version of the fork. Check the tabs for some new buttons! Be sure to try out Beta Windstacking. Thanks for the continued support, means a lot. ", isNew: false});
