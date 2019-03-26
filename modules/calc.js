@@ -230,6 +230,9 @@ function calcOurDmg(minMaxAvg, incStance, incFlucts) {
 	if (game.talents.stillRowing2.purchased) {
 		number *= ((game.global.spireRows * 0.06) + 1);
 	}
+	if (game.global.voidBuff && game.talents.voidMastery.purchased){
+		number *= 5;
+	}
 	if (game.talents.healthStrength.purchased && mutations.Healthy.active()) {
 		number *= ((0.15 * mutations.Healthy.cellCount()) + 1);
 	}
@@ -248,6 +251,9 @@ function calcOurDmg(minMaxAvg, incStance, incFlucts) {
 	}
 	if (game.singleRunBonuses.sharpTrimps.owned){
 		number *= 1.5;
+	}
+	if (game.global.uberNature == "Poison") {
+		number *= 3;
 	}
 	if (incStance && game.talents.scry.purchased && game.global.formation == 4 && (mutations.Healthy.active() || mutations.Corruption.active())){
 		number *= 2;
@@ -505,9 +511,15 @@ function calcHDratio() {
 }
 
 function calcCurrentStance() {
+    if (game.global.uberNature == "Wind" && getEmpowerment() == "Wind" && calcHDratio() < 16 && !game.global.mapsActive && (
+	(game.global.challengeActive != "Daily" && game.global.world >= getPageSetting('WindStackingMin')) ||
+        (game.global.challengeActive == "Daily" && game.global.world >= getPageSetting('dWindStackingMin')))) {
+	return 15;
+    }
+    else {
 
     //Base Calc
-    var ehealth = 0;
+    var ehealth = 1;
     if (game.global.fighting) {
         ehealth = (getCurrentEnemy().maxHealth - getCurrentEnemy().health);
     }
@@ -516,12 +528,14 @@ function calcCurrentStance() {
 
     //Heirloom Calc
     highDamageShield();
-    if (getPageSetting('AutoStance') == 3 && getPageSetting('highdmg') != undefined && game.global.challengeActive != "Daily" && game.global.ShieldEquipped.name != getPageSetting('highdmg'))
+    if (getPageSetting('AutoStance') == 3 && getPageSetting('highdmg') != undefined && game.global.challengeActive != "Daily" && game.global.ShieldEquipped.name != getPageSetting('highdmg')) {
         attackhigh *= trimpAA;
 	attackhigh *= getCritMulti(true);
-    if (getPageSetting('use3daily') == true && getPageSetting('dhighdmg') != undefined && game.global.challengeActive == "Daily" && game.global.ShieldEquipped.name != getPageSetting('dhighdmg'))
+    }
+    if (getPageSetting('use3daily') == true && getPageSetting('dhighdmg') != undefined && game.global.challengeActive == "Daily" && game.global.ShieldEquipped.name != getPageSetting('dhighdmg')) {
         attackhigh *= trimpAA;
 	attackhigh *= getCritMulti(true);
+    }
 
     //Heirloom Switch
     if (ehealth > 0) {
@@ -531,12 +545,18 @@ function calcCurrentStance() {
         var usehigh = false;
 	var stacksleft = 1;
 
-        if (game.global.challengeActive != "Daily" && getPageSetting('WindStackingMax') > 0)
+        if (game.global.challengeActive != "Daily" && getPageSetting('WindStackingMax') > 0) {
             stacks = getPageSetting('WindStackingMax');
-        if (game.global.challengeActive == "Daily" && getPageSetting('dWindStackingMax') > 0)
+	}
+        if (game.global.challengeActive == "Daily" && getPageSetting('dWindStackingMax') > 0) {
             stacks = getPageSetting('dWindStackingMax');
-	if (getEmpowerment() == "Wind")
-	stacksleft = (stacks - game.empowerments.Wind.currentDebuffPower);
+	}
+	if (game.global.uberNature == "Wind") {
+	    stacks += 100;
+	}
+	if (getEmpowerment() == "Wind") {
+	    stacksleft = (stacks - game.empowerments.Wind.currentDebuffPower);
+	}
 
 	//Use High
         if (
@@ -573,7 +593,7 @@ function calcCurrentStance() {
 	
 	//High
         } else if (usehigh) {
-            if (
+	    if (
                 (getEmpowerment() != "Wind") ||
                 (game.empowerments.Wind.currentDebuffPower >= stacks) ||
                 ((hitshigh * 4) > stacksleft) ||
@@ -590,5 +610,6 @@ function calcCurrentStance() {
                 return 11;
 	    }
         }
+    }
     }
 }

@@ -7,7 +7,7 @@ function initializeAutoTrimps() {
     loadPageVariables();
     ATscriptLoad('','SettingsGUI');
     ATscriptLoad('','Graphs');
-    ATmoduleList = ['query', 'calc', 'portal', 'upgrades', 'heirlooms', 'buildings', 'jobs', 'equipment', 'gather', 'stance', 'maps', 'breedtimer', 'dynprestige', 'fight', 'scryer', 'magmite', 'other', 'import-export', 'perks', 'fight-info', 'performance'];
+    ATmoduleList = ['query', 'calc', 'portal', 'upgrades', 'heirlooms', 'buildings', 'jobs', 'equipment', 'gather', 'stance', 'maps', 'breedtimer', 'dynprestige', 'fight', 'scryer', 'magmite', 'nature', 'other', 'import-export', 'perks', 'fight-info', 'performance'];
     for (var m in ATmoduleList) {
         ATscriptLoad(modulepath, ATmoduleList[m]);
     }
@@ -19,9 +19,6 @@ changelogList.push({date: "20/03/2019", version: "v3.1.0", description: "<b>4.10
 changelogList.push({date: "06/02/2019", version: "v3.1.0", description: "<b>4.10.4</b> Autonu Spender added. I think I did some other things but I honestly cant remember. Enjoy! ", isNew: true});
 changelogList.push({date: "15/01/2019", version: "v3.0.1", description: "<b>4.10.3</b> New Windstacking stance, seems to work fine. Removed B stance, Heirloom swap settings, Heirloom HD from Non-Daily and Daily tabs. New Windstacking manages it for you. ", isNew: false});
 changelogList.push({date: "12/01/2019", version: "v3.0.0", description: "<b>4.10.2</b> Whole host of new changes and background fixes and additions, mostly calculations, which means is pretty much a new version of the fork. Check the tabs for some new buttons! Be sure to try out Beta Windstacking. Thanks for the continued support, means a lot. ", isNew: false});
-changelogList.push({date: "30/12/2018", version: "v2.13.0", description: "<b>4.10.2</b> Merged Normal Windstacking and Hardcore Windstacking. Removed Ultimate Windstacking and replaced with WS MAX. Also made the code look a bit nicer yay! ", isNew: false});
-//changelogList.push({date: "27/12/2018", version: "v2.12.1", description: "<b>4.10.2</b> Fixed Ice map behaviour, added avoid empower and Windstacking antistack managment. ", isNew: false});
-//changelogList.push({date: "26/12/2018", version: "v2.12.0", description: "<b>4.10.2</b> ATGA reworked, check it out! More buttons added, probably more to come! Graphs have been prettified. Yadayada more stuff etc etc <b>HAPPY NEW YEAR!</b>", isNew: false});
 
 function assembleChangelog(a,b,c,d){return d?`<b class="AutoEggs">${a} ${b} </b><b style="background-color:#32CD32"> New:</b> ${c}<br>`:`<b>${a} ${b} </b> ${c}<br>`}
 function printChangelog() {
@@ -54,8 +51,6 @@ function mainLoop() {
         addToolTipToArmyCount();
     }
     if (mainCleanup() || portalWindowOpen || (!heirloomsShown && heirloomFlag) || (heirloomCache != game.global.heirloomsExtra.length)) {
-        if (getPageSetting('AutoHeirloomsNew') == 2) autoHeirlooms2();
-        else if (getPageSetting('AutoHeirloomsNew') == 1) autoHeirlooms();
         heirloomCache = game.global.heirloomsExtra.length;
     }
     heirloomFlag = heirloomsShown;
@@ -87,6 +82,7 @@ function mainLoop() {
     if (aWholeNewWorld && getPageSetting('FinishC2') > 0 && game.global.runningChallengeSquared) finishChallengeSquared();
     if (getPageSetting('spendmagmite') == 2 && !magmiteSpenderChanged) autoMagmiteSpender();
     if (getPageSetting('AutoNatureTokens') && game.global.world > 229) autoNatureTokens();
+    if (getPageSetting('autoenlight') && game.global.world > 229 && game.global.uberNature == false) autoEnlight();
     if (getPageSetting('BuyUpgradesNew') != 0) buyUpgrades();
     //if (getPageSetting('getamal') == true && game.global.challengeActive != "Trapper" && !game.global.spireActive && ((game.resources.trimps.realMax() / game.resources.trimps.getCurrentSend()) >= game.jobs.Amalgamator.getTriggerThresh())) mapsClicked(true);
 

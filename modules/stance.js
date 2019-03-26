@@ -295,6 +295,10 @@ function windStance() {
     if (game.global.world <= 70) return;
     var stancey = 2;
     if (game.global.challengeActive != "Daily") {
+	if (calcCurrentStance() == 5) {
+            stancey = 5;
+            lowHeirloom();
+        }
         if (calcCurrentStance() == 2) {
             stancey = 2;
             lowHeirloom();
@@ -306,6 +310,10 @@ function windStance() {
         if (calcCurrentStance() == 1) {
             stancey = 1;
             lowHeirloom();
+        }
+        if (calcCurrentStance() == 15) {
+            stancey = 5;
+            highHeirloom();
         }
         if (calcCurrentStance() == 12) {
             stancey = 2;
@@ -321,6 +329,10 @@ function windStance() {
         }
     }
     if (game.global.challengeActive == "Daily") {
+	if (calcCurrentStance() == 5) {
+            stancey = 5;
+            dlowHeirloom();
+        }
         if (calcCurrentStance() == 2) {
             stancey = 2;
             dlowHeirloom();
@@ -332,6 +344,10 @@ function windStance() {
         if (calcCurrentStance() == 1) {
             stancey = 1;
             dlowHeirloom();
+        }
+        if (calcCurrentStance() == 15) {
+            stancey = 5;
+            dhighHeirloom();
         }
         if (calcCurrentStance() == 12) {
             stancey = 2;

@@ -198,7 +198,27 @@ function resetAutoTrimps(a,b){ATrunning=!1,setTimeout(function(d){localStorage.r
 function loadAutoTrimps(){try{var a=document.getElementById("importBox").value.replace(/[\n\r]/gm,""),b=JSON.parse(a);if(null==b)return void debug("Error importing AT settings, the string is empty.","profile")}catch(c){return void debug("Error importing AT settings, the string is bad."+c.message,"profile")}debug("Importing new AT settings file...","profile"),resetAutoTrimps(b)}
 function cleanupAutoTrimps(){for(var a in autoTrimpSettings){var b=document.getElementById(autoTrimpSettings[a].id);null==b&&delete autoTrimpSettings[a]}}
 function exportModuleVars(){return JSON.stringify(compareModuleVars())}
-function compareModuleVars(){var c={},d=Object.keys(MODULES);for(var e in d){var f=d[e],g=Object.keys(MODULES[d[e]]);for(var h in g){var k=g[h],l=MODULES[f][k],m=MODULESdefault[f][k];JSON.stringify(l)!=JSON.stringify(m)&&('undefined'==typeof c[f]&&(c[f]={}),c[f][k]=l)}}return c}
+
+function compareModuleVars() {
+    var diffs = {};
+    var mods = Object.keys(MODULES);
+    for (var i in mods) {
+        var mod = mods[i];
+        var vars = Object.keys(MODULES[mods[i]]);
+        for (var j in vars) {
+            var vj = vars[j];
+            var a = MODULES[mod][vj];
+            var b = MODULESdefault[mod][vj];
+            if (JSON.stringify(a)!=JSON.stringify(b)) {
+                if (typeof diffs[mod] === 'undefined')
+                    diffs[mod] = {};
+                diffs[mod][vj] = a;
+            }
+        }
+    }
+    return diffs;
+}
+
 function importModuleVars(){try{var thestring=document.getElementById('importBox').value,strarr=thestring.split(/\n/);for(var line in strarr){var s=strarr[line];s=s.substring(0,s.indexOf(';')+1),s=s.replace(/\s/g,''),eval(s),strarr[line]=s}var tmpset=compareModuleVars()}catch(a){return void debug('Error importing MODULE vars, the string is bad.'+a.message,'profile')}localStorage.removeItem('storedMODULES'),safeSetItems('storedMODULES',JSON.stringify(tmpset))}
 function resetModuleVars(a){ATrunning=!1,setTimeout(function(){localStorage.removeItem('storedMODULES'),MODULES=JSON.parse(JSON.stringify(MODULESdefault)),safeSetItems('storedMODULES',JSON.stringify(storedMODULES)),ATrunning=!0}(a),101)}
 settingsProfileMakeGUI();

@@ -207,8 +207,6 @@ function doPortal(challenge) {
     var c2done = true;
     if(!game.global.portalActive) return;
     if (getPageSetting('spendmagmite')==1) autoMagmiteSpender();
-    if (getPageSetting('AutoHeirloomsNew')==1) autoHeirlooms();
-    if (getPageSetting('AutoHeirloomsNew')==2) autoHeirlooms2();
     if (getPageSetting('autoheirlooms') == true && getPageSetting('typetokeep') != 'None' && getPageSetting('raretokeep') != 'None') autoheirlooms3();
     portalClicked();
     if (getPageSetting('AutoAllocatePerks')==1 && (typeof MODULES["perks"] !== 'undefined' || typeof AutoPerks !== 'undefined'))
