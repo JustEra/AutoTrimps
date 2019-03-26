@@ -1,7 +1,7 @@
 //updated
 MODULES["gather"] = {};
 //These can be changed (in the console) if you know what you're doing:
-MODULES["gather"].minTraps = 100;
+MODULES["gather"].minTraps = 5;
 MODULES["gather"].minScienceAmount = 100;
 MODULES["gather"].minScienceSeconds = 60;
 
@@ -60,7 +60,7 @@ function manualLabor2() {
     }
     else if (trapTrimpsOK && targetBreed < getBreedTime(true)){
         //combined to optimize code.
-        if (game.buildings.Trap.owned < 100 && canAffordBuilding('Trap')) {
+        if (game.buildings.Trap.owned < MODULES["gather"].minTraps && canAffordBuilding('Trap')) {
             safeBuyBuilding('Trap');
             setGather('buildings');
         }
